@@ -93,11 +93,13 @@ module.exports = function(grunt) {
         report: 'min',
         preserveComments: 'some'
       },
-      dist: {
-        files: {
-          'build/js/app.min.js': ['build/js/app.js']
-        }
+      build: {
+        src: ['build/js/app.js'],
+        dest: 'build/js/app.min.js'
       }
+      // dist: {
+      //   files: {
+      //     'build/js/app.min.js': ['build/js/app.js']
     },
 
     connect: {
