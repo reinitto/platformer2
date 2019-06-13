@@ -1,24 +1,19 @@
-game.TitleScreen = me.ScreenObject.extend({
+game.GameOver = me.ScreenObject.extend({
   /**
    * action to perform on state change
    */
-  onResetEvent: function() {
-    // title screen
-    var backgroundImage = new me.Sprite(0, 0, {
-      image: me.loader.getImage('title_screen')
-    });
 
-    // position and scale to fit with the viewport size
+  onResetEvent: function() {
+    console.log('adding gameover screen');
+    var backgroundImage = new me.Sprite(0, 0, {
+      image: me.loader.getImage('win_screen')
+    });
     backgroundImage.anchorPoint.set(0, 0);
     backgroundImage.scale(
       me.game.viewport.width / backgroundImage.width,
       me.game.viewport.height / backgroundImage.height
     );
-
-    // add to the world container
     me.game.world.addChild(backgroundImage, 1);
-
-    // add a new renderable component with the scrolling text
     me.game.world.addChild(
       new (me.Renderable.extend({
         // constructor
@@ -35,26 +30,6 @@ game.TitleScreen = me.ScreenObject.extend({
             me.loader.getBinary('PressStart2P'),
             me.loader.getImage('PressStart2P')
           );
-
-          // a tween to animate the arrow
-          this.scrollertween = new me.Tween(this)
-            .to({ scrollerpos: -2200 }, 10000)
-            .onComplete(this.scrollover.bind(this))
-            .start();
-
-          this.scroller =
-            'A SMALL STEP BY STEP TUTORIAL FOR GAME CREATION WITH MELONJS       ';
-          this.scrollerpos = 600;
-        },
-
-        // some callback for the tween objects
-        scrollover: function() {
-          // reset to default value
-          this.scrollerpos = 640;
-          this.scrollertween
-            .to({ scrollerpos: -2200 }, 10000)
-            .onComplete(this.scrollover.bind(this))
-            .start();
         },
 
         update: function(dt) {
@@ -62,15 +37,21 @@ game.TitleScreen = me.ScreenObject.extend({
         },
 
         draw: function(renderer) {
-          this.font.draw(renderer, 'PRESS ENTER TO PLAY', 20, 240);
-          this.font.draw(renderer, this.scroller, this.scrollerpos, 440);
-        },
-        onDestroyEvent: function() {
-          //just in case
-          this.scrollertween.stop();
+          this.font.draw(
+            renderer,
+            'YOU WON',
+            me.game.viewport.width - 100,
+            me.game.viewport.height
+          );
+          this.font.draw(
+            renderer,
+            'PRESS ENTER TO PLAY AGAIN',
+            me.game.viewport.width - 200,
+            me.game.viewport.height + 100
+          );
         }
       }))(),
-      2
+      5
     );
 
     // change to play state on press Enter or click/tap
